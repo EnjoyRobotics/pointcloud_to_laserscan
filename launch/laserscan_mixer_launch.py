@@ -15,7 +15,7 @@ def generate_launch_description():
             description='Namespace for sample topics'
         ),
         Node(
-            package='laserscan_mixer',
+            package='pointcloud_to_laserscan',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar2/scan'),
@@ -23,7 +23,7 @@ def generate_launch_description():
             parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
         ),
         Node(
-            package='laserscan_mixer',
+            package='pointcloud_to_laserscan',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar1/scan'),
@@ -31,12 +31,12 @@ def generate_launch_description():
             parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
         ),
         Node(
-            package='laserscan_mixer',
+            package='pointcloud_to_laserscan',
             executable='pointcloud_mixer',
             name='pointcloud_mixer',
         ),
         Node(
-            package='laserscan_mixer', executable='pointcloud_to_laserscan_node',
+            package='pointcloud_to_laserscan', executable='pointcloud_to_laserscan_node',
             remappings=[('cloud_in', '/cloud'),
                         ('scan', [LaunchConfiguration(variable_name='scanner'), '/scan'])],
             parameters=[{
