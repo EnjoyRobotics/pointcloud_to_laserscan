@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(pointcloud_to_laserscan)
+project(laserscan_mixer)
 
 find_package(ament_cmake REQUIRED)
 
@@ -58,6 +58,14 @@ ament_target_dependencies(dummy_pointcloud_publisher
   "sensor_msgs"
 )
 
+add_executable(pointcloud_mixer
+  src/pointcloud_mixer.cpp
+)
+ament_target_dependencies(pointcloud_mixer
+  "rclcpp"
+  "sensor_msgs"
+)
+
 install(TARGETS
   laserscan_to_pointcloud
   pointcloud_to_laserscan
@@ -67,6 +75,11 @@ install(TARGETS
 
 install(TARGETS
   dummy_pointcloud_publisher
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS
+  pointcloud_mixer
   DESTINATION lib/${PROJECT_NAME}
 )
 

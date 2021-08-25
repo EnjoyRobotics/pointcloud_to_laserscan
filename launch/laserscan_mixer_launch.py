@@ -14,27 +14,8 @@ def generate_launch_description():
             name='scanner', default_value='scanner',
             description='Namespace for sample topics'
         ),
-        # ExecuteProcess(
-        #     cmd=[
-        #         'ros2', 'topic', 'pub', '-r', '10',
-        #         '--qos-profile', 'sensor_data',
-        #         [LaunchConfiguration(variable_name='lidar2'), '/scan'],
-        #         'sensor_msgs/msg/LaserScan', yaml.dump({
-        #             'header': {'frame_id': 'scan'}, 'angle_min': -1.0,
-        #             'angle_max': 1.0, 'angle_increment': 0.1, 'range_max': 10.0,
-        #             'ranges': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        #         })
-        #     ],
-        #     name='scan_publisher'
-        # ),
-        # Node(
-        #     package='tf2_ros',
-        #     executable='static_transform_publisher',
-        #     name='static_transform_publisher',
-        #     arguments='0 0 0 0 0 0 1 map scan'
-        # ),
         Node(
-            package='pointcloud_to_laserscan',
+            package='laserscan_mixer',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar2/scan'),
@@ -42,7 +23,7 @@ def generate_launch_description():
             parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
         ),
         Node(
-            package='pointcloud_to_laserscan',
+            package='laserscan_mixer',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar1/scan'),
@@ -50,12 +31,12 @@ def generate_launch_description():
             parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
         ),
         Node(
-            package='pointcloud_to_laserscan',
+            package='laserscan_mixer',
             executable='pointcloud_mixer',
             name='pointcloud_mixer',
         ),
         Node(
-            package='pointcloud_to_laserscan', executable='pointcloud_to_laserscan_node',
+            package='laserscan_mixer', executable='pointcloud_to_laserscan_node',
             remappings=[('cloud_in', '/cloud'),
                         ('scan', [LaunchConfiguration(variable_name='scanner'), '/scan'])],
             parameters=[{
