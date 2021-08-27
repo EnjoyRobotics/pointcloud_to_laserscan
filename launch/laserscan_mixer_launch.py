@@ -20,7 +20,7 @@ def generate_launch_description():
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar2/scan'),
                         ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud1'])],
-            parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
+            parameters=[{'target_frame': 'lidar1_link', 'transform_tolerance': 0.01}]
         ),
         Node(
             package='pointcloud_to_laserscan',
@@ -28,7 +28,7 @@ def generate_launch_description():
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar1/scan'),
                         ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud2'])],
-            parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
+            parameters=[{'target_frame': 'lidar1_link', 'transform_tolerance': 0.01}]
         ),
         Node(
             package='pointcloud_to_laserscan',
@@ -40,7 +40,7 @@ def generate_launch_description():
             remappings=[('cloud_in', '/cloud'),
                         ('scan', [LaunchConfiguration(variable_name='scanner'), '/scan'])],
             parameters=[{
-                'target_frame': 'lidar2',
+                'target_frame': 'lidar1_link',
                 'transform_tolerance': 0.01,
                 'min_height': 0.0,
                 'max_height': 1.0,
