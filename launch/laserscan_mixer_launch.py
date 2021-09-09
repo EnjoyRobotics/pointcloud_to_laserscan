@@ -18,17 +18,17 @@ def generate_launch_description():
             package='laserscan_mixer',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
-            remappings=[('scan_in', 'lidar2/scan'),
+            remappings=[('scan_in', 'lidar1/scan'),
                         ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud1'])],
-            parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
+            parameters=[{'target_frame': 'base_link', 'transform_tolerance': 0.01}]
         ),
         Node(
             package='laserscan_mixer',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
-            remappings=[('scan_in', 'lidar1/scan'),
+            remappings=[('scan_in', 'lidar2/scan'),
                         ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud2'])],
-            parameters=[{'target_frame': 'lidar2', 'transform_tolerance': 0.01}]
+            parameters=[{'target_frame': 'base_link', 'transform_tolerance': 0.01}]
         ),
         Node(
             package='laserscan_mixer',
