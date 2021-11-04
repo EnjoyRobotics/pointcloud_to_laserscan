@@ -15,38 +15,38 @@ def generate_launch_description():
             description='Namespace for sample topics'
         ),
         Node(
-            package='pointcloud_to_laserscan',
-            executable='laserscan_to_pointcloud_node',
-            name='laserscan_to_pointcloud',
-            remappings=[('scan_in', 'lidar2/scan'),
-                        ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud1'])],
-            parameters=[{'target_frame': 'lidar1_link', 'transform_tolerance': 0.01}]
-        ),
-        Node(
-            package='pointcloud_to_laserscan',
+            package='laserscan_mixer',
             executable='laserscan_to_pointcloud_node',
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar1/scan'),
-                        ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud2'])],
-            parameters=[{'target_frame': 'lidar1_link', 'transform_tolerance': 0.01}]
+                        ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud1'])],
+            parameters=[{'target_frame': 'lidar_link', 'transform_tolerance': 0.01}]
         ),
         Node(
-            package='pointcloud_to_laserscan',
+            package='laserscan_mixer',
+            executable='laserscan_to_pointcloud_node',
+            name='laserscan_to_pointcloud',
+            remappings=[('scan_in', 'lidar2/scan'),
+                        ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud2'])],
+            parameters=[{'target_frame': 'lidar_link', 'transform_tolerance': 0.01}]
+        ),
+        Node(
+            package='laserscan_mixer',
             executable='pointcloud_mixer',
             name='pointcloud_mixer',
         ),
         Node(
-            package='pointcloud_to_laserscan', executable='pointcloud_to_laserscan_node',
+            package='laserscan_mixer', executable='pointcloud_to_laserscan_node',
             remappings=[('cloud_in', '/cloud'),
                         ('scan', [LaunchConfiguration(variable_name='scanner'), '/scan'])],
             parameters=[{
-                'target_frame': 'lidar1_link',
+                'target_frame': 'lidar_link',
                 'transform_tolerance': 0.01,
                 'min_height': 0.0,
                 'max_height': 1.0,
                 'angle_min': -1.5708*2,  # -M_PI/2
                 'angle_max': 1.5708*2,  # M_PI/2
-                'angle_increment': 0.0087,  # M_PI/360.0
+                'angle_increment': 0.0087,  # M_PI/360
                 'scan_time': 0.3333,
                 'range_min': 0.01,
                 'range_max': 64.0,
