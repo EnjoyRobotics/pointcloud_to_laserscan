@@ -22,6 +22,11 @@ RUN mkdir -p /tmp/opt && \
 # multi-stage for building
 FROM $FROM_IMAGE AS builder
 
+# Odrive install
+RUN apt update
+
+WORKDIR /etc/udev/rules.d
+
 # install overlay dependencies
 ARG OVERLAY_WS
 WORKDIR $OVERLAY_WS
@@ -47,4 +52,4 @@ RUN sed --in-place --expression \
       /ros_entrypoint.sh
 
 # run launch file
-CMD ["ros2", "launch", "pointcloud_to_laserscan", "laserscan_mixer_launch.py"]
+CMD ["ros2", "launch", "laserscan_mixer", "laserscan_mixer_launch.py"]
