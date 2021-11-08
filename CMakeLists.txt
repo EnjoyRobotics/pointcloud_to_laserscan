@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(pointcloud_to_laserscan)
+project(laserscan_mixer)
 
 find_package(ament_cmake REQUIRED)
 
