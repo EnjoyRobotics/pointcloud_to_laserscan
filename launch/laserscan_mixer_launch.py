@@ -6,10 +6,19 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 import yaml
+import os
 
 
 def generate_launch_description():
+
+    simulation = os.environ.get('SIMULATION')
+    if simulation in [None, '']:
+        simulation = 'False'
+    arg_use_sim_time = LaunchConfiguration('use_sim_time'),
+
     return LaunchDescription([
+        DeclareLaunchArgument('use_sim_time', default_value=simulation),
+
         DeclareLaunchArgument(
             name='scanner', default_value='scanner',
             description='Namespace for sample topics'
@@ -20,7 +29,8 @@ def generate_launch_description():
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar1/scan'),
                         ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud1'])],
-            parameters=[{'target_frame': 'base_link', 'transform_tolerance': 0.01}]
+            parameters=[{'target_frame': 'base_link', 'transform_tolerance': 0.01,
+                'use_sim_time': arg_use_sim_time}]
         ),
         Node(
             package='laserscan_mixer',
@@ -28,12 +38,14 @@ def generate_launch_description():
             name='laserscan_to_pointcloud',
             remappings=[('scan_in', 'lidar2/scan'),
                         ('cloud', [LaunchConfiguration(variable_name='scanner'), '/cloud2'])],
-            parameters=[{'target_frame': 'base_link', 'transform_tolerance': 0.01}]
+            parameters=[{'target_frame': 'base_link', 'transform_tolerance': 0.01,
+                'use_sim_time': arg_use_sim_time}]
         ),
         Node(
             package='laserscan_mixer',
             executable='pointcloud_mixer',
             name='pointcloud_mixer',
+            parameters=[{'use_sim_time': arg_use_sim_time}]
         ),
         Node(
             package='laserscan_mixer', executable='pointcloud_to_laserscan_node',
@@ -51,7 +63,8 @@ def generate_launch_description():
                 'range_min': 0.01,
                 'range_max': 64.0,
                 'use_inf': False,
-                'inf_epsilon': 1.0
+                'inf_epsilon': 1.0,
+                'use_sim_time': arg_use_sim_time
             }],
             name='pointcloud_to_laserscan'
         )
